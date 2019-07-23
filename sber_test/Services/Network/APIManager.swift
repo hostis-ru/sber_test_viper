@@ -25,13 +25,11 @@ class APIManager {
 		request.httpBody = parameters.percentEscaped().data(using: .utf8)
 		
 		NetworkService.shared.postData(urlRequest: request) { (json) in
-			do {
+			
 				guard let response = json as? [String:Any] else { return }
 //				print(json)
 				completion(response)
-			} catch {
-				print(error)
-			}
+			
 		}
 	}
 	
@@ -49,13 +47,11 @@ class APIManager {
 		request.httpBody = parameters.percentEscaped().data(using: .utf8)
 		
 		NetworkService.shared.postData(urlRequest: request) { (json) in
-			do {
+			
 				guard let response = json as? [String:Any] else { return }
 //				print(json)
 				completion(response)
-			} catch {
-				print(error)
-			}
+			
 		}
 	}
 }

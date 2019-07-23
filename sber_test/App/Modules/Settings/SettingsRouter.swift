@@ -16,7 +16,7 @@ class SettingsRouter: NSObject, Router {
 	
 	var navigationController: UINavigationController?
 	var rootVC: UIViewController?
-	var presenter: SettingsPresenter?
+	weak var presenter: SettingsPresenter?
 	
 	func start() {
 		

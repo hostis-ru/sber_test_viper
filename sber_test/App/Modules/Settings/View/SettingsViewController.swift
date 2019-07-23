@@ -47,7 +47,7 @@ class SettingsViewController: UIViewController, SettingsViewProtocol {
 	}
 	
 	func setupTableView() {
-		tableView = GenericTableViewController(items: presenter?.data ?? [], configure: { [weak self] (cell: UITableViewCell, item: Langs) in
+		tableView = GenericTableViewController(items: presenter?.data ?? [], configure: { (cell: UITableViewCell, item: Langs) in
 			cell.textLabel?.text = item.desc
 		}, selectHandler: chooseLangHandler ?? {_ in })
 		guard let tableView = tableView else {

@@ -20,7 +20,7 @@ public class Dict: NSManagedObject {
 		do {
 			if let result = try CoreDataManager.instance.context.fetch(request) as? [Dict] {
 				result.forEach({
-					print("res: ", $0.primaryWord)
+					print("res: ", $0.primaryWord ?? "")
 				})
 				return result
 			}

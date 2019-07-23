@@ -16,7 +16,7 @@ class TranslateRouter: NSObject, Router {
 	
 	var navigationController: UINavigationController?
 	var rootVC: UIViewController?
-	var presenter: TranslatePresenter?
+	weak var presenter: TranslatePresenter?
 	
 	func start() {
 		
@@ -38,6 +38,7 @@ class TranslateRouter: NSObject, Router {
 		case .changeLang(let primary):
 			
 			let settingsRouter = SettingsRouter(navigationController!)
+			childRouters.append(settingsRouter)
 			settingsRouter.start()
 			
 			if primary {
@@ -54,11 +55,6 @@ class TranslateRouter: NSObject, Router {
 					self.pop()
 				}
 			}
-			
-			
-			
-		default:
-			break
 		}
 	}
 	
