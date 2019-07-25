@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0403BA7522E9EE70000BF82A /* Throttler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0403BA7422E9EE70000BF82A /* Throttler.swift */; };
 		0497ABC222DF856D0060F999 /* Dict+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0497ABC022DF856D0060F999 /* Dict+CoreDataClass.swift */; };
 		0497ABC322DF856D0060F999 /* Dict+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0497ABC122DF856D0060F999 /* Dict+CoreDataProperties.swift */; };
 		0497ABC622DFAD510060F999 /* Langs+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0497ABC422DFAD510060F999 /* Langs+CoreDataClass.swift */; };
@@ -41,6 +42,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0403BA7422E9EE70000BF82A /* Throttler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Throttler.swift; sourceTree = "<group>"; };
 		0497ABC022DF856D0060F999 /* Dict+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dict+CoreDataClass.swift"; sourceTree = "<group>"; };
 		0497ABC122DF856D0060F999 /* Dict+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dict+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		0497ABC422DFAD510060F999 /* Langs+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Langs+CoreDataClass.swift"; sourceTree = "<group>"; };
@@ -91,6 +93,7 @@
 			isa = PBXGroup;
 			children = (
 				04BAFBD922DF572B005FD071 /* TableView.swift */,
+				0403BA7422E9EE70000BF82A /* Throttler.swift */,
 			);
 			path = CommonElements;
 			sourceTree = "<group>";
@@ -406,6 +409,7 @@
 				04BAFBCD22DF43AE005FD071 /* Network.swift in Sources */,
 				04BAFBAF22DE0866005FD071 /* ListViewController.swift in Sources */,
 				04BAFBD222DF4709005FD071 /* Dictionary+PercentEscaped.swift in Sources */,
+				0403BA7522E9EE70000BF82A /* Throttler.swift in Sources */,
 				04BAFB8822DE03CA005FD071 /* AppDelegate.swift in Sources */,
 				04BAFBC422DE0A9A005FD071 /* SettingsPresenter.swift in Sources */,
 				04BAFBD822DF4C32005FD071 /* Translate.swift in Sources */,

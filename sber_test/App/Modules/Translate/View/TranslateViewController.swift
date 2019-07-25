@@ -12,8 +12,11 @@ protocol TranslateViewProtocol: class {
 	
 	var presenter: TranslatePresenterProtocol? { get set }
 	
-	func setTranslation(text: String)
+	func setTranslation(origin: String?, translation: String)
 	func updateNavBar(direction: Direction)
+	func blockUI()
+	func getCurrentWord() -> String?
+	func switchWords()
 }
 
 class TranslateViewController: UIViewController, TranslateViewProtocol {
@@ -23,7 +26,6 @@ class TranslateViewController: UIViewController, TranslateViewProtocol {
 	var textField: UITextField = {
 		let textField = UITextField()
 		textField.placeholder = "Введите слово"
-		
 		
 		textField.addTarget(self, action: #selector(textFieldEditingDidEnd), for: .editingDidEnd)
 		return textField
@@ -70,6 +72,8 @@ class TranslateViewController: UIViewController, TranslateViewProtocol {
 		return button
 	}()
 	
+	private let throttler = Throttler(minimumDelay: 0.2)
+	
 	init() {
 		super.init(nibName: nil, bundle: nil)
 	}
@@ -89,7 +93,7 @@ class TranslateViewController: UIViewController, TranslateViewProtocol {
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		
-		presenter?.setDirection()
+		presenter?.setDirection()		
 	}
 	
 	func setupView() {
@@ -132,30 +136,58 @@ class TranslateViewController: UIViewController, TranslateViewProtocol {
 	}
 	
 	func updateNavBar(direction: Direction) {
+		print("updating nav bar with primary: \(direction.primary.desc ?? ""), secondary: \(direction.secondary.desc ?? "")")
 		navBarPrimaryLangBtn.setTitle(direction.primary.desc, for: .normal)
 		navBarSecondaryLangBtn.setTitle(direction.secondary.desc, for: .normal)
 		
 	}
 	
+	func getCurrentWord() -> String? {
+		guard let text = textField.text, !text.isEmpty else { return nil }
+		return text
+	}
 	
+	func switchWords() {
+		if let origin = textField.text, !origin.isEmpty, let translation = translateLabel.text, !translation.isEmpty {
+			textField.text = translation
+			translateLabel.text = origin
+		}
+	}
 	
 	@objc func textFieldEditingDidEnd(_ sender: Any) {
 		// api call
 		guard let text = textField.text, !text.isEmpty else {
-			setTranslation(text: "")
+			setTranslation(origin: nil, translation: "")
 			return
 		}
 		presenter?.translate(text: text)
 	}
 	
+	// nav bar actions
 	@objc func clickOnButton(_ sender: Any) {
 		print("tap")
 		if let sender = sender as? UIButton {
-			presenter?.handleTapNavBar(tag: sender.tag)
+			throttler.throttle { [weak self] in
+				self?.presenter?.handleTapNavBar(tag: sender.tag)
+			}
+			
 		}
 	}
 	
-	func setTranslation(text: String) {
-		translateLabel.text = text
+	// set ui with translation
+	func setTranslation(origin: String?, translation: String) {
+		if let origin = origin {
+			textField.text = origin
+		}
+		translateLabel.text = translation
+	}
+	
+	// block ui if we call Translation VC from List VC
+	func blockUI() {
+		textField.isEnabled = false
+		translateLabel.isEnabled = false
+		navBarPrimaryLangBtn.isEnabled = false
+		navBarSecondaryLangBtn.isEnabled = false
+		navBarSwitchBtn.isEnabled = false
 	}
 }

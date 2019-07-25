@@ -32,7 +32,7 @@ class SettingsPresenter: SettingsPresenterProtocol {
 			}
 		}
 	}
-	weak var interactor: SettingsInteractorProtocol? {
+	var interactor: SettingsInteractorProtocol? {
 		didSet {
 			interactor?.presenter = self
 			interactor?.getLanguages(completion: { [weak self] in

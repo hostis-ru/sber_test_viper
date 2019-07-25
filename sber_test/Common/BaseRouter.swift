@@ -11,6 +11,7 @@ import UIKit
 
 enum Destination {
 	case changeLang(primary: Bool)
+	case translation(dict: Dict)
 	
 }
 

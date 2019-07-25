@@ -18,7 +18,7 @@ protocol SettingsInteractorProtocol: class {
 
 class SettingsInteractor: SettingsInteractorProtocol {
 	
-	var presenter: SettingsPresenterProtocol?
+	weak var presenter: SettingsPresenterProtocol?
 	
 	func getLanguages(completion: @escaping () -> ()) {
 		APIManager.getLanguages { (json) in

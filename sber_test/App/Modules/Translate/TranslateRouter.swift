@@ -30,7 +30,7 @@ class TranslateRouter: NSObject, Router {
         presenter.view       = vc
         presenter.interactor = interactor
 		
-		navigationController?.pushViewController(vc, animated: false)
+		navigationController?.pushViewController(vc, animated: true)
 	}
 	
 	func push(_ destination: Destination) {
@@ -38,23 +38,25 @@ class TranslateRouter: NSObject, Router {
 		case .changeLang(let primary):
 			
 			let settingsRouter = SettingsRouter(navigationController!)
-			childRouters.append(settingsRouter)
 			settingsRouter.start()
 			
 			if primary {
 				settingsRouter.rootVC?.title = "Выбор основного языка"
 				settingsRouter.presenter?.chooseLangHandler = { [unowned self] (lang) in
 					print("chosen language is \(lang.code ?? ""), \(lang.desc ?? "")")
-					self.presenter?.currentDirection?.primary = lang
+					self.presenter?.handleLangSelection(primary: lang, secondary: nil)
 					self.pop()
 				}
 			} else {
 				settingsRouter.rootVC?.title = "Выбор языка перевода"
 				settingsRouter.presenter?.chooseLangHandler = { [unowned self] (lang) in
-					self.presenter?.currentDirection?.secondary = lang
+					self.presenter?.handleLangSelection(primary: nil, secondary: lang)
 					self.pop()
 				}
 			}
+			print("1")
+		default:
+			break
 		}
 	}
 	
@@ -65,6 +67,15 @@ class TranslateRouter: NSObject, Router {
 	
 	init(_ navigationController: UINavigationController) {
 		self.navigationController = navigationController
+	}
+	
+	func childDidFinish(_ child: Router?) {
+		for (index, coordinator) in childRouters.enumerated() {
+			if coordinator === child {
+				childRouters.remove(at: index)
+				break
+			}
+		}
 	}
 	
 }

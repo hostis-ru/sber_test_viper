@@ -41,7 +41,7 @@ class SettingsViewController: UIViewController, SettingsViewProtocol {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		view.backgroundColor = .blue
+		view.backgroundColor = .white
 		
 		
 	}
@@ -49,7 +49,7 @@ class SettingsViewController: UIViewController, SettingsViewProtocol {
 	func setupTableView() {
 		tableView = GenericTableViewController(items: presenter?.data ?? [], configure: { (cell: UITableViewCell, item: Langs) in
 			cell.textLabel?.text = item.desc
-		}, selectHandler: chooseLangHandler ?? {_ in })
+		}, selectHandler: chooseLangHandler ?? { _ in })
 		guard let tableView = tableView else {
 			return
 		}

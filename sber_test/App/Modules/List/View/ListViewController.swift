@@ -70,8 +70,8 @@ class ListViewController: UIViewController, ListViewProtocol {
 //			print("item: \(item.secondaryWord)")
 			cell.textLabel?.text = "\(item.primaryWord ?? "")"
 			cell.detailTextLabel?.text = "\(item.secondaryWord ?? "")"
-		}, selectHandler: { (_) in
-			
+		}, selectHandler: { [weak self] (dict) in
+			self?.presenter?.handleDidSelect(item: dict)
 		})
 		guard let tableView = tableView else {
 			return

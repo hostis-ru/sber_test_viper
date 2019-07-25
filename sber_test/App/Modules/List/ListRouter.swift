@@ -16,6 +16,7 @@ class ListRouter: NSObject, Router {
 	
 	var navigationController: UINavigationController?
 	var rootVC: UIViewController?
+	weak var presenter: ListPresenter?
 	
 	func start() {
 		
@@ -24,6 +25,7 @@ class ListRouter: NSObject, Router {
 		
 		let interactor = ListInteractor()
 		let presenter = ListPresenter(router: self)
+		self.presenter		 = presenter
 		
 		presenter.view       = vc
 		presenter.interactor = interactor
@@ -31,9 +33,31 @@ class ListRouter: NSObject, Router {
 		navigationController?.pushViewController(vc, animated: false)
 	}
 	
+	func push(_ destination: Destination) {
+		switch destination {
+		case .translation(let dict):
+			let translateRouter = TranslateRouter(navigationController!)
+			translateRouter.start()
+			translateRouter.presenter?.modal = true
+			translateRouter.presenter?.setTranslation(dict: dict)
+			
+		default:
+			break
+		}
+	}
+	
 	
 	init(_ navigationController: UINavigationController) {
 		self.navigationController = navigationController
+	}
+	
+	func childDidFinish(_ child: Router?) {
+		for (index, coordinator) in childRouters.enumerated() {
+			if coordinator === child {
+				childRouters.remove(at: index)
+				break
+			}
+		}
 	}
 	
 }

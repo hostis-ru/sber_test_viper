@@ -18,10 +18,13 @@ protocol ListPresenterProtocol: class {
 	func fetchData()
 	func deleteItems()
 	
+	func handleDidSelect(item: Dict)
 	func handleSearchDidChange(text: String)
 }
 
 class ListPresenter: ListPresenterProtocol {
+	
+	// MARK: Variables
 	
 	var router: ListRouter?
 	weak var view: ListViewProtocol? {
@@ -43,10 +46,17 @@ class ListPresenter: ListPresenterProtocol {
 		}
 	}
 	
+	init(router: ListRouter) {
+		self.router     = router
+	}
+	
+	// MARK:
+	
 	func setCurrentData() {
 		currentData = data
 	}
 	
+	// handling search filtering
 	func handleSearchDidChange(text: String) {
 		guard !text.isEmpty else {
 			currentData = data
@@ -72,10 +82,6 @@ class ListPresenter: ListPresenterProtocol {
 			view?.reloadData()
 	}
 	
-	init(router: ListRouter) {
-		self.router     = router
-	}
-	
 	func fetchData() {
 		interactor?.fetchData(completion: { (data) in
 			if let data = data, !data.isEmpty {
@@ -89,6 +95,13 @@ class ListPresenter: ListPresenterProtocol {
 		interactor?.deleteItems { [weak self] in
 			self?.view?.reloadData()
 		}
+	}
+	
+	
+	// MARK: Routing
+	
+	func handleDidSelect(item: Dict) {
+		router?.push(.translation(dict: item))
 	}
 	
 }

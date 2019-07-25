@@ -21,7 +21,6 @@ class SettingsRouter: NSObject, Router {
 	func start() {
 		
         let vc   = SettingsViewController()
-		rootVC = vc
         vc.title = "Настройки"
 		
         let interactor       = SettingsInteractor()

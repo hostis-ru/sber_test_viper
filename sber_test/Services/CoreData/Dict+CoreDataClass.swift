@@ -28,4 +28,25 @@ public class Dict: NSManagedObject {
 		return [Dict]()
 	}
 	
+	public static func getTranslation(origin: String, primaryLang: String, secondaryLang: String) -> Dict? {
+		
+		let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Dict")
+		let originPredicate = NSPredicate(format: "ANY primaryWord = %@", origin)
+		let primaryPredicate = NSPredicate(format: "ANY primaryLang = %@", primaryLang)
+		let secondaryPredicate = NSPredicate(format: "ANY secondaryLang = %@", secondaryLang)
+		
+		let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [originPredicate, primaryPredicate, secondaryPredicate])
+		
+		request.predicate = predicate
+		do {
+			if let result = try CoreDataManager.instance.context.fetch(request) as? [Dict] {
+				if let res = result.first {
+					print("found Dict: origin \(res.primaryWord ?? ""), translation \(res.secondaryWord ?? "")")
+					return res
+				}
+			}
+		} catch { }
+		return nil
+	}
+	
 }

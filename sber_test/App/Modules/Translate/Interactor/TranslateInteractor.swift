@@ -46,17 +46,29 @@ class TranslateInteractor: TranslateInteractorProtocol {
 	func saveTranslationInDatabase(primary: String, secondary: String, direction: Direction) {
 		
 		// do not save translation if it the same as original word
-		guard primary != secondary else { return }
+		guard primary != secondary, let primaryCode = direction.primary.code, let secondaryCode = direction.secondary.code else { return }
 		
-		let translation = Dict(context: CoreDataManager.instance.context)
-		translation.primaryWord = primary
-		translation.secondaryWord = secondary
-		translation.primaryLang = String(direction.primary.code ?? "")
-		translation.secondaryLang = String(direction.secondary.code ?? "")
+		if let translationInCoreData = Dict.getTranslation(origin: primary, primaryLang: primaryCode, secondaryLang: secondaryCode) {
+			if translationInCoreData.secondaryWord == secondary {
+				print("already in database word: \(primary), translation: \(secondary)")
+				return
+			} else {
+				translationInCoreData.secondaryWord = secondary
+				CoreDataManager.instance.saveContext()
+				print("saved word: \(primary), translation: \(secondary)")
+			}
+		} else {
+			let translation = Dict(context: CoreDataManager.instance.context)
+			translation.primaryWord = primary
+			translation.secondaryWord = secondary
+			translation.primaryLang = String(direction.primary.code ?? "")
+			translation.secondaryLang = String(direction.secondary.code ?? "")
+			
+			CoreDataManager.instance.saveContext()
+			print("saved word: \(primary), translation: \(secondary)")
+		}
 		
-		CoreDataManager.instance.saveContext()
 		
-		print("saved word: \(primary), translation: \(secondary)")
 		
 	}
 }
